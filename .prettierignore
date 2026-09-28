@@ -1,0 +1,9 @@
+node_modules
+dist
+.expo
+supabase/.temp
+package-lock.json
+*.md
+assets
+e2e/screenshots
+test-results

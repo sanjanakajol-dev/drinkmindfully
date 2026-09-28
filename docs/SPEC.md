@@ -31,7 +31,7 @@ Switching path changes the streak type; total alcohol-free days carry over. The 
 | **January 2027** | Apple/Google in-app subscriptions (RevenueCat) → premium inside the apps; international venue cities |
 
 ### Free core (1 Dec)
-- Onboarding: age check (date of birth, under-18 blocked) → path → home city → goals → usual drinks per week and usual price per drink → consent to store health data. Logging possible within 30 seconds; **no account required**.
+- Onboarding: age check (date of birth, under-18 blocked) → path → home city → goals → usual drinks per week, on how many days, and usual price per drink → consent to store health data. Logging possible within 30 seconds; **no account required**.
 - Logging: one-tap "Alcohol-free today" / "I drank", or detailed per-drink entry (type, quantity, optional "why"). Alcohol-free drinks are logged as **"mindful choices"** and count as wins.
 - Streaks, patterns, **money saved**.
 - **Share cards** in 9:16 (Stories) and 1:1 (WhatsApp); user picks which numbers appear (streak, AF days, mindful choices, money saved).
@@ -75,7 +75,7 @@ In-app friends/feed (sharing is outbound only) · languages other than English �
 
 | Record | Key fields | Rules |
 |---|---|---|
-| `profiles` | user id, date of birth, home city, path, AF-days goal, weekly drink limit, usual drinks/week, usual price/drink, reminder settings, consent timestamps | 18+; consent required before logging |
+| `profiles` | user id, date of birth, home city, path, AF-days goal, weekly drink limit, usual drinks/week, usual drinking days/week, usual price/drink, reminder settings, consent timestamps | 18+; consent required before logging |
 | `drink_logs` | client UUID, user, logical date, logged at (+ tz), alcoholic?, type, quantity, why, source (quick/detailed) | quantity 1–20; back-fill ≤ 7 days; idempotent on client UUID |
 | `day_status` | user, date, `alcohol_free` / `drank` | one per user per date; missing row = not logged |
 | `cities` | name, country, currency, time zone, alcohol switch, legal drinking age, premium live? | from master Sheet |

@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, 'claude/**']
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  EXPO_NO_TELEMETRY: 1
+
+jobs:
+  app:
+    name: Lint, types and rules tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run format:check
+      - run: npm test -- --ci
+
+  database:
+    name: Database rules and sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.118.0
+      - name: Start local Supabase
+        run: supabase start -x studio,realtime,storage-api,imgproxy,edge-runtime,logflare,vector,supavisor,postgres-meta,mailpit
+      - name: Row-level security and data rule tests
+        run: supabase test db
+      - name: Sign-in and offline sync against the real services
+        run: |
+          eval "$(supabase status -o env)"
+          SUPABASE_TEST_URL="$API_URL" SUPABASE_TEST_PUBLISHABLE_KEY="$PUBLISHABLE_KEY" npm run test:integration
+
+  web:
+    name: Web smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx expo export --platform web
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:web
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: web-smoke
+          path: |
+            e2e/screenshots/
+            test-results/
+          if-no-files-found: ignore

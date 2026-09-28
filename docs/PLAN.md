@@ -14,7 +14,7 @@ _Companion to [SPEC.md](./SPEC.md). Written 28 Sep 2026. Dates assume work start
 
 | Layer | Choice | Notes |
 |---|---|---|
-| App framework | **Expo SDK 57** (React Native 0.86, React 19.2) | Latest stable per the Expo changelog (released 30 Jun 2026). Re-check on day 1; if a newer SDK is out, stay on 57 unless it is a non-breaking upgrade. |
+| App framework | **Expo SDK 57** (React Native 0.86, React 19.2) | Confirmed on day 1: `expo@57.0.25` is `latest` on npm; SDK 58 is still a preview. |
 | Language | TypeScript (strict) | Shared types between app and Edge Functions. |
 | Navigation | Expo Router | File-based routes; same code for web. |
 | Server state | TanStack Query, persisted on device | Offline cache. |
@@ -39,21 +39,20 @@ All libraries are added with `npx expo install` so versions match SDK 57, then p
 ## 2. Repository layout
 
 ```
-app/                      Expo Router screens
-  (onboarding)/           age, path, city, goals, spend, consent
-  (tabs)/                 home, progress, discover (premium), support, settings
 src/
+  app/                    Expo Router screens (every file is a route)
   domain/                 pure rules + tests: days, streaks, money, visibility, entitlements
-  data/                   Supabase client, outbox, queries
-  features/               logging, sharing, reminders, premium, sommelier, support
+  data/                   Supabase client, auth, outbox, journal, sync
+  features/               sharing, logging, reminders, premium, sommelier, support
   ui/                     design tokens (brand kit plugs in here), components
   strings/en.ts           every user-facing string (French later = one new file)
 supabase/
   migrations/             SQL schema, RLS policies, functions
   functions/              Edge Functions (see §5)
-  tests/                  RLS / database tests
+  tests/database/         pgTAP row-level security and data-rule tests
+e2e/                      Playwright web smoke tests
 docs/
-  SPEC.md  PLAN.md
+  SPEC.md  PLAN.md  SETUP.md
   content/                Google Sheet templates and curator guide
   legal/                  privacy policy, terms, refund policy drafts
 .github/workflows/        CI
