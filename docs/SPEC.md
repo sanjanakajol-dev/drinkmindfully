@@ -17,7 +17,7 @@ A lifestyle app that makes drinking less feel stylish and premium. The free tier
 | Goals | Alcohol-free days per week **and** max drinks per week | Every day alcohol-free |
 | Streak | **Weeks on target** (Mon–Sun; AF days ≥ goal and drinks ≤ limit) | **Days in a row** without a drink |
 | Always shown | Total alcohol-free days (never goes down) | Total alcohol-free days |
-| Alcoholic recommendations | Only where the city switch is on **and** user ≥ local legal drinking age | **Never** |
+| Alcoholic recommendations | Only where the city switch is on **and** user is 23+ and at least the local legal drinking age | **Never** |
 
 Switching path changes the streak type; total alcohol-free days carry over. The app never uses the word "relapse".
 
@@ -67,7 +67,7 @@ In-app friends/feed (sharing is outbound only) · languages other than English �
 - **Day boundary:** a day runs 04:00–03:59 local device time; a drink at 01:00 counts toward the previous night.
 - **Unlogged ≠ alcohol-free.** Users can back-fill up to 7 days.
 - **Money saved** = (usual drinks/week × usual price, prorated per day) − (logged drinks × usual price). A quick "I drank" with no details counts as a typical drinking day (usual drinks/week ÷ usual drinking days). Currency = home city currency.
-- **Alcoholic content visibility:** shown only if path = Mindful **and** city `alcohol_recs_enabled` **and** user age ≥ city `legal_drinking_age`. At launch the switch is ON for Marbella, Lisbon, Bangalore, Mysore; OFF for Mumbai, Delhi, Dubai, Paris. Karnataka uses 21; Spain and Portugal use 18.
+- **Alcoholic content visibility:** shown only if path = Mindful **and** city `alcohol_recs_enabled` **and** user age ≥ max(**23**, city `legal_drinking_age`). 23 is Drink Mindfully's own brand minimum, applied on top of local law (decided 28 Sep 2026). At launch the switch is ON for Marbella, Lisbon, Bangalore, Mysore (all effectively 23+); OFF for Mumbai, Delhi, Dubai, Paris. Legal ages on record: Karnataka 21, Delhi 25, Maharashtra 25 for spirits (21 beer/wine; we use 25), UAE 21, Spain/France/Portugal 18.
 - **Premium access** is decided only by the `subscriptions` record (server-side).
 - **18+ only.**
 
@@ -131,7 +131,7 @@ Streaks, weeks on target and money saved are **computed**, not stored.
 12. AI sommelier ships with premium (15 Dec), premium only, 30 questions/month, Claude Opus 5 by default (switchable to Sonnet 5 or Haiku 4.5).
 13. Venue content: one Google Sheet per city (curators see only their city) + a master Sheet only the founder edits; `Publish` column; 15-minute sync; bad rows skipped and emailed; mass-deletion safety brake.
 14. Free service tiers until 1 Dec; upgrading the live database at the web launch is recommended (backups). AI costs are on top of the $50/month budget.
-15. Alcohol switch per §4.
+15. Alcohol switch and the 23+ brand minimum per §4.
 16. ~20 testers; founder signs off.
 17. If late, cut in this order: AI sommelier → drinks catalogue → international cities. The 1 Dec free core is protected.
 18. Founder owns the support inbox; helpline list compiled together, verified by the founder.

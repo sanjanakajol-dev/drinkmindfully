@@ -1,7 +1,7 @@
 -- Row-level security and data rules for the core schema. Run with `npx supabase test db`.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(32);
+select plan(36);
 
 -- Two users: A signed in with email, B anonymous.
 insert into auth.users (id, aud, role, email, is_anonymous, created_at)
@@ -122,7 +122,14 @@ select throws_ok(
 );
 select is(public.is_premium(), false, 'A starts without premium');
 select is(public.can_see_alcoholic_content(), true,
-  'a Mindful adult over 21 in Bangalore can see alcoholic content');
+  'a Mindful 31-year-old in Bangalore can see alcoholic content');
+select lives_ok($$update public.profiles set date_of_birth = (current_date - interval '22 years')::date$$,
+  'A becomes 22 (legal in Karnataka)');
+select is(public.can_see_alcoholic_content(), false,
+  'but under the brand minimum of 23, so no alcoholic content');
+select lives_ok($$update public.profiles set date_of_birth = (current_date - interval '23 years')::date$$,
+  'A becomes 23');
+select is(public.can_see_alcoholic_content(), true, 'at 23 alcoholic content appears');
 
 -- ---------------------------------------------------------------------------------------------
 -- A payment webhook (running as the table owner) activates A's subscription

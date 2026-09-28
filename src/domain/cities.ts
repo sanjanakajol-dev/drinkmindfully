@@ -14,8 +14,8 @@ export type City = CityAlcoholRules & {
  * Launch cities. The database (seeded from `supabase/seed.sql`, later the master Google Sheet) is
  * the source of truth; this copy lets onboarding work offline. A test keeps the two in sync.
  *
- * Legal drinking ages for Delhi and Mumbai must be re-checked before their alcohol switch is
- * turned on.
+ * These are local legal ages. Alcoholic content also requires the 23+ brand minimum (see
+ * `alcoholContentAge` in visibility.ts). Mumbai uses 25, the spirits age in Maharashtra.
  */
 export const CITIES: readonly City[] = [
   {

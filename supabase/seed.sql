@@ -1,5 +1,6 @@
 -- Launch cities. Keep in sync with src/domain/cities.ts (a unit test checks this file).
--- Legal drinking ages for Delhi and Mumbai must be re-checked before their alcohol switch is turned on.
+-- These are local legal ages; can_see_alcoholic_content() also applies the 23+ brand minimum.
+-- Mumbai uses 25, the spirits age in Maharashtra.
 insert into public.cities
   (id, name, country_code, currency, time_zone, legal_drinking_age, alcohol_recommendations_enabled, emergency_number)
 values
