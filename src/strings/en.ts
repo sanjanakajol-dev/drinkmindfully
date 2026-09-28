@@ -5,6 +5,11 @@ export const en = {
     brand: 'DRINK MINDFULLY',
     tagline: 'drinking less, living more',
   },
+  notFound: {
+    title: 'This page doesn’t exist',
+    body: 'The link may be old or mistyped.',
+    home: 'Go to today',
+  },
   preview: {
     badge: 'Week 1 preview · placeholder design',
     today: 'Today',
